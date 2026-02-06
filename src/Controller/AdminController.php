@@ -21,6 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 final class AdminController extends AbstractController
 {
+    // Tableau de bord avec les statistiques
     #[Route('', name: 'app_admin_dashboard', methods: ['GET'])]
     public function dashboard(PostRepository $postRepo, UserRepository $userRepo, CommentRepository $commentRepo): Response
     {
@@ -42,6 +43,7 @@ final class AdminController extends AbstractController
     #[Route('/users/{id}/toggle', name: 'app_admin_toggle_user', methods: ['POST'])]
     public function toggleUser(User $user, EntityManagerInterface $em): Response
     {
+        // Active ou désactive un utilisateur
         $user->setIsActive(!$user->isActive());
         $em->flush();
 

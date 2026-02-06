@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class AuthController extends AbstractController
 {
+    // Inscription avec validation email
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
@@ -26,6 +27,7 @@ final class AuthController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Hash du mot de passe avant sauvegarde
             $user->setPassword(
                 $hasher->hashPassword($user, $form->get('plainPassword')->getData())
             );
@@ -46,6 +48,7 @@ final class AuthController extends AbstractController
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authUtils): Response
     {
+        // Redirige vers l'accueil si déjà connecté
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
         }

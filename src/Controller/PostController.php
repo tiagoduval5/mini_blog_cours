@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class PostController extends AbstractController
 {
+    // Affiche la page d'accueil avec les derniers articles
     #[Route('/', name: 'app_home', methods: ['GET'])]
     public function home(PostRepository $postRepository): Response
     {
@@ -25,6 +26,7 @@ final class PostController extends AbstractController
     #[Route('/articles', name: 'app_posts_list', methods: ['GET'])]
     public function list(PostRepository $postRepository, Request $request): Response
     {
+        // Liste des articles avec pagination (9 par page)
         $page = $request->query->getInt('page', 1);
         $limit = 9;
         

@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
 {
+    // Identifiant unique
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
