@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} - Mon Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <article class="article-detail">
+        {% if post.picture %}
+            <div class="mb-4 text-center">
+                <img src="{{ post.picture }}" class="img-fluid rounded shadow-sm" alt="{{ post.title }}" style="max-height: 500px; object-fit: cover;">
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mb-3" style="font-size: 2.5rem; font-weight: 700; line-height: 1.2;">{{ post.title }}</h1>
+                
+                <div class="article-meta mb-4 pb-3 border-bottom">
+                    <small class="text-muted">
+                        <strong>{{ post.author.firstName }} {{ post.author.lastName }}</strong>
+                    </small>
+                    <span class="text-muted ms-3">Publié le {{ post.publishedAt|date('d/m/Y') }} à {{ post.publishedAt|date('H:i') }}</span>
+                    <span class="ms-3">
+                        <span class="badge bg-primary" style="font-size: 0.9rem; padding: 0.5rem 0.8rem;">
+                            {{ post.category.name }}
+                        </span>
+                    </span>
+                </div>
+
+                <div class="article-content" style="font-size: 1.1rem; line-height: 1.8; color: #333; white-space: pre-wrap;">
+                    {{ post.content }}
+                </div>
+
+                {% if app.user and (post.author == app.user or is_granted('ROLE_ADMIN')) %}
+                    <div class="mt-5 pt-4 border-top">
+                        <a href="{{ path('app_post_edit', {id: post.id}) }}" class="btn btn-secondary btn-lg me-2">✏️ Modifier</a>
+                        {% include 'post/_delete_form.html.twig' %}
+                    </div>
+                {% endif %}
+
+                <div class="mt-5">
+                    <a href="{{ path('app_posts_list') }}" class="btn btn-outline-secondary">← Retour aux articles</a>
+                </div>
+
+                <!-- Commentaires -->
+                <div class="mt-5 pt-4">
+                    <h3 class="mb-4">💬 Commentaires</h3>
+
+                    {% if app.user %}
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">Ajouter un commentaire</h5>
+                            </div>
+                            <div class="card-body">
+                                <form method="POST" action="{{ path('app_comment_add', {id: post.id}) }}">
+                                    <div class="mb-3">
+                                        <label for="comment_content" class="form-label">Votre commentaire</label>
+                                        <textarea id="comment_content" name="content" class="form-control" rows="4" placeholder="Écrivez votre commentaire..." required></textarea>
+                                    </div>
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('comment_form') }}">
+                                    <button type="submit" class="btn btn-info">📮 Publier</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Vous devez être connecté</strong> pour ajouter un commentaire.
+                            <a href="{{ path('app_login') }}">Se connecter</a>
+                        </div>
+                    {% endif %}
+
+                    <!-- Liste des commentaires approuvés -->
+                    {% if post.comments|length > 0 %}
+                        <div class="comments-list">
+                            {% for comment in post.comments %}
+                                {% if comment.status == 'approved' or (app.user and comment.author == app.user) or is_granted('ROLE_ADMIN') %}
+                                    <div class="card mb-3 shadow-sm{% if comment.status != 'approved' %} border-warning{% endif %}">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        <strong>{{ comment.author.firstName }} {{ comment.author.lastName }}</strong>
+                                                        <small class="text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}</small>
+                                                        {% if comment.status == 'pending' %}
+                                                            <span class="badge bg-secondary ms-2">En attente</span>
+                                                        {% elseif comment.status == 'rejected' %}
+                                                            <span class="badge bg-dark ms-2">Rejeté</span>
+                                                        {% endif %}
+                                                    </h6>
+                                                    <p class="card-text">{{ comment.content }}</p>
+                                                </div>
+                                                {% if app.user and (comment.author == app.user or is_granted('ROLE_ADMIN')) %}
+                                                    <form method="POST" action="{{ path('app_comment_delete', {id: comment.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr ?');">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                                        <button class="btn btn-sm btn-dark">🗑️</button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Aucun commentaire pour le moment. Soyez le premier à commenter !
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">📋 Informations</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-3">
+                            <strong>Auteur:</strong><br>
+                            <span class="text-muted">{{ post.author.firstName }} {{ post.author.lastName }}</span>
+                        </p>
+                        <hr>
+                        <p class="mb-3">
+                            <strong>Catégorie:</strong><br>
+                            <span class="badge bg-primary">{{ post.category.name }}</span>
+                        </p>
+                        <hr>
+                        <p class="mb-0">
+                            <strong>Publié le:</strong><br>
+                            <span class="text-muted">{{ post.publishedAt|date('d M Y à H:i') }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+{% endblock %}

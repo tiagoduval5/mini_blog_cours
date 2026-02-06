@@ -1,0 +1,33 @@
+<footer class="footer mt-5 py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5 class="footer-title">📝 Mon Blog</h5>
+                <p class="footer-text">Une plateforme de partage d'articles et de discussions.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5 class="footer-title">Liens utiles</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="{{ path('app_home') }}">Accueil</a></li>
+                    <li><a href="{{ path('app_posts_list') }}">Articles</a></li>
+                    <li><a href="{{ path('app_categories_list') }}">Catégories</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5 class="footer-title">Connexion</h5>
+                {% if is_granted('ROLE_USER') %}
+                    <p><small class="footer-text">Connecté en tant que <strong>{{ app.user.firstName }}</strong></small></p>
+                {% else %}
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="{{ path('app_login') }}">Se connecter</a></li>
+                        <li><a href="{{ path('app_register') }}">S'inscrire</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        <hr class="footer-divider">
+        <div class="text-center">
+            <p class="footer-text"><small>&copy; 2025 Mon Blog. Tous droits réservés.</small></p>
+        </div>
+    </div>
+</footer>

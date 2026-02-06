@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil - Mon Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Mon profil</h1>
+            <hr>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Informations personnelles</h5>
+                    
+                    {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.firstName) }}
+                            {{ form_widget(form.firstName, { attr: { class: 'form-control' } }) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.lastName) }}
+                            {{ form_widget(form.lastName, { attr: { class: 'form-control' } }) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, { attr: { class: 'form-control' } }) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Statistiques</h5>
+                    <p>
+                        <strong>Membre depuis:</strong> {{ user.createdAt|date('d/m/Y') }}<br>
+                        <strong>Articles publiés:</strong> {{ user.posts|length }}<br>
+                        <strong>Commentaires:</strong> {{ user.comments|length }}
+                    </p>
+                    <a href="{{ path('app_profile_posts') }}" class="btn btn-info btn-sm">Mes articles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

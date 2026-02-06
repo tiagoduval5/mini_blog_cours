@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accès refusé{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <h1 class="display-1 text-primary mb-3">403</h1>
+                    <h2 class="mb-4">Accès refusé</h2>
+                    <p class="text-muted mb-4">
+                        Désolé, vous n'avez pas les permissions nécessaires pour accéder à cette page. 
+                        Seuls les administrateurs peuvent y accéder.
+                    </p>
+                    
+                    <div class="mb-4">
+                        <a href="{{ path('app_home') }}" class="btn btn-primary me-2">Retour à l'accueil</a>
+                        {% if app.user %}
+                            <a href="{{ path('app_profile') }}" class="btn btn-secondary">Mon profil</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-secondary">Se connecter</a>
+                        {% endif %}
+                    </div>
+
+                    {% if not app.user %}
+                        <hr class="my-4">
+                        <p class="text-muted small">
+                            Si vous pensez avoir accès à cette page, <a href="{{ path('app_login') }}">connectez-vous</a> avec votre compte administrateur.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

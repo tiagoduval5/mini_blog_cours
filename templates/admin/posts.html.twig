@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des articles - Admin{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Gestion des articles</h1>
+    <hr>
+
+    <div class="mb-4">
+        <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">Retour au tableau de bord</a>
+    </div>
+
+    {% if posts %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Catégorie</th>
+                    <th>Date</th>
+                    <th>Commentaires</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td><strong>{{ post.title }}</strong></td>
+                        <td>{{ post.author.firstName }} {{ post.author.lastName }}</td>
+                        <td><span class="badge bg-info">{{ post.category.name }}</span></td>
+                        <td>{{ post.publishedAt|date('d/m/Y') }}</td>
+                        <td>{{ post.comments|length }}</td>
+                        <td>
+                            <a href="{{ path('app_post_show', {id: post.id}) }}" class="btn btn-sm btn-primary">Voir</a>
+                            <a href="{{ path('app_post_edit', {id: post.id}) }}" class="btn btn-sm btn-warning">Éditer</a>
+                            <form method="POST" action="{{ path('app_admin_delete_post', {id: post.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">Aucun article trouvé.</div>
+    {% endif %}
+</div>
+{% endblock %}

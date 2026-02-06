@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs - Admin{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Gestion des utilisateurs</h1>
+    <hr>
+
+    <div class="mb-4">
+        <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">Retour au tableau de bord</a>
+    </div>
+
+    {% if users %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Rôles</th>
+                    <th>Statut</th>
+                    <th>Inscrit</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.firstName }} {{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% for role in user.roles %}
+                                <span class="badge bg-primary">{{ role }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if user.isActive %}
+                                <span class="badge bg-primary">Actif</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactif</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.createdAt|date('d/m/Y') }}</td>
+                        <td>
+                            <form method="POST" action="{{ path('app_admin_toggle_user', {id: user.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ user.id) }}">
+                                <button type="submit" class="btn btn-sm btn-info">{{ user.isActive ? 'Désactiver' : 'Activer' }}</button>
+                            </form>
+                            <form method="POST" action="{{ path('app_admin_promote_user', {id: user.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('promote' ~ user.id) }}">
+                                <button type="submit" class="btn btn-sm {% if 'ROLE_ADMIN' in user.roles %}btn-secondary{% else %}btn-primary{% endif %}">
+                                    {{ 'ROLE_ADMIN' in user.roles ? 'Retirer Admin' : 'Faire Admin' }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">Aucun utilisateur trouvé.</div>
+    {% endif %}
+</div>
+{% endblock %}

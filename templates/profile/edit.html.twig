@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer mon profil - Mon Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">✏️ Éditer mon profil</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Prénom</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" value="{{ user.firstName }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Nom</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" value="{{ user.lastName }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
+                            <small class="text-muted">L'adresse email ne peut pas être modifiée</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profilePicture" class="form-label">Photo de profil (URL)</label>
+                            <input type="url" id="profilePicture" name="profilePicture" class="form-control" value="{{ user.profilePicture ?? '' }}" placeholder="https://exemple.com/photo.jpg">
+                        </div>
+
+                        {% if user.profilePicture %}
+                            <div class="mb-3">
+                                <label class="form-label">Aperçu</label>
+                                <img src="{{ user.profilePicture }}" alt="Photo de profil" class="img-thumbnail" style="max-width: 200px;">
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary btn-lg">💾 Enregistrer</button>
+                            <a href="{{ path('app_profile') }}" class="btn btn-outline-secondary btn-lg">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

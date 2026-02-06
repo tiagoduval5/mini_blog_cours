@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la catégorie - Mon Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">✏️ Modifier la catégorie</h4>
+                </div>
+                <div class="card-body">
+                    {{ include('category/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a href="{{ path('app_category_index') }}" class="btn btn-outline-secondary">← Retour aux catégories</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

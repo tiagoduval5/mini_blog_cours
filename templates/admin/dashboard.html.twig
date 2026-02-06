@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord Admin - Mon Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Tableau de bord Admin</h1>
+    <hr>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Articles</h5>
+                    <h2>{{ totalPosts }}</h2>
+                    <a href="{{ path('app_admin_posts') }}" class="btn btn-outline-light btn-sm">Gérer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Utilisateurs</h5>
+                    <h2>{{ totalUsers }}</h2>
+                    <a href="{{ path('app_admin_users') }}" class="btn btn-outline-light btn-sm">Gérer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Commentaires</h5>
+                    <h2>{{ pendingComments }}</h2>
+                    <a href="{{ path('app_admin_comments') }}" class="btn btn-outline-light btn-sm">Modérer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Catégories</h5>
+                    <h2>—</h2>
+                    <a href="{{ path('app_admin_categories') }}" class="btn btn-outline-light btn-sm">Gérer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gestion</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="{{ path('app_admin_posts') }}">Gestion des articles</a></li>
+                        <li class="list-group-item"><a href="{{ path('app_admin_users') }}">Gestion des utilisateurs</a></li>
+                        <li class="list-group-item"><a href="{{ path('app_admin_categories') }}">Gestion des catégories</a></li>
+                        <li class="list-group-item"><a href="{{ path('app_admin_comments') }}">Modération des commentaires</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

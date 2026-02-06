@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des catégories - Admin{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-0">📂 Gestion des catégories</h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{{ path('app_category_new') }}" class="btn btn-primary">
+                ✚ Nouvelle catégorie
+            </a>
+            <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">
+                ← Retour au tableau de bord
+            </a>
+        </div>
+    </div>
+
+    {% if app.flashes %}
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    {% if categories is empty %}
+        <div class="alert alert-info">
+            Aucune catégorie trouvée. <a href="{{ path('app_category_new') }}">Créer une catégorie</a>
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Articles</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>
+                                <strong>{{ category.name }}</strong>
+                            </td>
+                            <td>
+                                {% if category.description %}
+                                    {{ category.description[:50] }}{% if category.description|length > 50 %}...{% endif %}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge badge-primary">{{ category.posts|length }}</span>
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-sm btn-secondary">
+                                    ✏️ Modifier
+                                </a>
+                                <form method="POST" action="{{ path('app_admin_delete_category', {'id': category.id}) }}" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr ? Cela supprimera aussi tous les articles associés.');">
+                                    <button type="submit" class="btn btn-sm btn-dark">
+                                        🗑️ Supprimer
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

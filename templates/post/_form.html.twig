@@ -1,0 +1,30 @@
+{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+    <div class="mb-3">
+        {{ form_label(form.title, 'Titre', {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.title, {attr: {class: 'form-control', placeholder: 'Entrez le titre de votre article'}}) }}
+        {{ form_errors(form.title) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.category, 'Catégorie', {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.category, {attr: {class: 'form-select'}}) }}
+        {{ form_errors(form.category) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.content, 'Contenu', {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.content, {attr: {class: 'form-control', rows: 10, placeholder: 'Écrivez votre article ici...'}}) }}
+        {{ form_errors(form.content) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.picture, 'Image (URL)', {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.picture, {attr: {class: 'form-control', placeholder: 'https://exemple.com/image.jpg'}}) }}
+        {{ form_errors(form.picture) }}
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" class="btn btn-primary btn-lg">{{ button_label|default('Publier') }}</button>
+        <a href="{{ path('app_posts_list') }}" class="btn btn-outline-secondary btn-lg">Annuler</a>
+    </div>
+{{ form_end(form) }}

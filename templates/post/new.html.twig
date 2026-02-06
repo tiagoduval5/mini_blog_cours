@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel article - Mon Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">✍️ Écrire un nouvel article</h4>
+                </div>
+                <div class="card-body">
+                    {{ include('post/_form.html.twig') }}
+                </div>
+            </div>
+            <a href="{{ path('app_posts_list') }}" class="btn btn-outline-secondary mt-3">← Retour aux articles</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
